@@ -4,6 +4,8 @@ const {default: mongoose} = require('mongoose');
 const expressAsyncHandler = require('express-async-handler');
 const bodyParser = require('body-parser');
 const loginSignup = require('./Controllers/userController');
+const { protect } = require("./middlewares/authMiddleware");
+const {getDashboradData,addNewDashboardElement}=require('./Controllers/assessmentController');
 
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
@@ -34,6 +36,8 @@ app.get('/', (req, res) => {
 
 
 app.post('/login',loginSignup );
+app.get('/dashboard',protect,getDashboradData)
+app.post('/add',protect,addNewDashboardElement)
 
 const PORT = process.env.PORT || 5000;
 const server=app.listen(PORT, () => {
