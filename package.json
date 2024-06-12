@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Navneetkrh/Vamana_server/issues"
   },
-  "homepage": "https://github.com/Navneetkrh/Vamana_server#readme"
+  "homepage": "https://github.com/Navneetkrh/Vamana_server#readme",
+  "dependencies": {
+    "mongoose": "^8.4.1"
+  }
 }
