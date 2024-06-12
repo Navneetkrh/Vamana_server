@@ -1,0 +1,19 @@
+{
+  "name": "vamana_server",
+  "version": "1.0.0",
+  "description": "server for vamana app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Navneetkrh/Vamana_server.git"
+  },
+  "author": "Navneet,Soham and Dhristi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Navneetkrh/Vamana_server/issues"
+  },
+  "homepage": "https://github.com/Navneetkrh/Vamana_server#readme"
+}
