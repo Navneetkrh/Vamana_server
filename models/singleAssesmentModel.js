@@ -6,7 +6,7 @@ const daydata=mongoose.Schema({
         required:true,
     },
     data:{
-        type:mongoose.Schema.Types.Mixed,
+        type:Map,
         required:true,
     }
     
@@ -17,7 +17,14 @@ const singleAssessmentModel = mongoose.Schema({
         type:String,
         required:true,
     },
-    days:mongoose.Schema.Types.Mixed,
+    days:{
+        type:Map,
+        of:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"daydata"
+
+        }
+    },
     extra:{
         type:mongoose.Schema.Types.Mixed,
         required:false,

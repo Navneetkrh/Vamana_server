@@ -39,23 +39,84 @@ const addNewDashboardElement=expressAsyncHandler(async (req, res) => {
         res.json(new_assesment)
 }  
 )
+// addSingleAssesment
+const addSingleAssesment = expressAsyncHandler(async (req, res) => {
+    const { assessmentName, day, id, data } = req.body;
 
-const addSingleAssesment=expressAsyncHandler(async (req,res) =>{
-    const {assessmentName,day,id}=req.body;
-    // update assesments in Assessment 
-    const assessment=await Assessment.findById({_id:id});
-    // if assessmentName is not a key in assessment.assessments
-    // create a new SingleAssessment 
-    // eupdate the current day in assessment.assessment[assessmentName].days[day]
-    const data_to_update={
-        number:day,
-        data:req.body
-    
+    // Find the assessment by id
+    const assessment = await Assessment.findById(id);
+
+    if (!assessment) {
+        res.status(404);
+        throw new Error('Assessment not found');
     }
-    await assessment.UpdateOne({$set:{[`assessments.${assessmentName}.days.${day}`]:data_to_update}})
-    res.json(assessment)
-   
-    
-}
-)
-module.exports={getDashboradData,addNewDashboardElement}
+
+    // Ensure the assessments field and nested structures exist
+    if (!assessment.assessments) {
+        assessment.assessments = {};
+    }
+
+    // Ensure the specific assessment name exists
+    if (!assessment.assessments[assessmentName]) {
+        assessment.assessments[assessmentName] = { days: {} };
+    }
+
+    // Ensure the days field exists for the specific assessment name
+    if (!assessment.assessments[assessmentName].days) {
+        assessment.assessments[assessmentName].days = {};
+    }
+
+    // Update the specific day for the given assessmentName
+    const dataToUpdate = {
+        number: day,
+        data: data,
+    };
+
+    // Ensure the day exists as an array for the specific assessment name
+    if (!Array.isArray(assessment.assessments[assessmentName].days[day])) {
+        assessment.assessments[assessmentName].days[day] = [];
+    }
+
+    // Add the new data to the day array for the specific assessment name
+    assessment.assessments[assessmentName].days[day].push(dataToUpdate);
+
+    // Save the updated assessment document
+    await assessment.save();
+
+    // Return the updated assessment
+    res.json(assessment);
+});
+
+
+const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
+    const { id, assessmentName, day } = req.body;
+    const assessment=await Assessment.findById(id)
+    console.log(assessment);
+
+    try {
+        // Create the projection string dynamically
+        const projection = { [`assessments.${assessmentName}.days.${day}`]: 1 };
+
+        // Find the assessment by id with the specified projection
+        const assessment = await Assessment.findById(id, projection);
+
+        if (!assessment) {
+            return res.status(404).json({ message: 'Assessment not found' });
+        }
+
+        // Extract the specific day data
+        const dayData = assessment.assessments?.[assessmentName]?.days?.[day];
+
+        if (!dayData) {
+            return res.status(404).json({ message: 'Assessment data not found' });
+        }
+
+        // Return the specific day data
+        res.json(dayData);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
+module.exports={getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}

@@ -20,7 +20,11 @@ const assessmentModel = mongoose.Schema({
     }
     ,
     assessments:{
-        type:mongoose.Schema.Types.Mixed,
+        type:Map,
+        of:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"SingleAssessment"
+        },
         required:false,
     }
     
