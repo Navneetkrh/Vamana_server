@@ -31,6 +31,8 @@ const singleAssessmentModel = mongoose.Schema({
     }
     
 });
+const Daydata=mongoose.model("Daydata",daydata);
+
 const SingleAssessment=mongoose.model("SingleAssessment",singleAssessmentModel);
 module.exports=SingleAssessment;
-module.exports=daydata;
+module.exports=Daydata;

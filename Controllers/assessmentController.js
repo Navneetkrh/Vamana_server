@@ -4,6 +4,7 @@ const expressAsyncHandler = require('express-async-handler');
 const Assessment = require('../models/assessmentModel');
 const patient=require('../models/patientModel');
 const SingleAssessment = require('../models/singleAssesmentModel');
+const Daydata = require('../models/singleAssesmentModel');
 
 
 const getDashboradData=expressAsyncHandler(async (req, res) => {
@@ -33,6 +34,7 @@ const addNewDashboardElement=expressAsyncHandler(async (req, res) => {
             patientUhid:req.body.uhid,
             patientName:req.body.name,
             patient:new_patient,
+            assessmentData:{}
             
         })
         await new_assesment.save();
@@ -41,78 +43,33 @@ const addNewDashboardElement=expressAsyncHandler(async (req, res) => {
 )
 // addSingleAssesment
 const addSingleAssesment = expressAsyncHandler(async (req, res) => {
-    const { assessmentName, day, id, data } = req.body;
-
-    // Find the assessment by id
-    const assessment = await Assessment.findById(id);
-
-    if (!assessment) {
-        res.status(404);
-        throw new Error('Assessment not found');
-    }
-
-    // Ensure the assessments field and nested structures exist
-    if (!assessment.assessments) {
-        assessment.assessments = {};
-    }
-
-    // Ensure the specific assessment name exists
-    if (!assessment.assessments[assessmentName]) {
-        assessment.assessments[assessmentName] = { days: {} };
-    }
-
-    // Ensure the days field exists for the specific assessment name
-    if (!assessment.assessments[assessmentName].days) {
-        assessment.assessments[assessmentName].days = {};
-    }
-
-    // Update the specific day for the given assessmentName
-    const dataToUpdate = {
-        number: day,
-        data: data,
-    };
-
-    // Ensure the day exists as an array for the specific assessment name
-    if (!Array.isArray(assessment.assessments[assessmentName].days[day])) {
-        assessment.assessments[assessmentName].days[day] = [];
-    }
-
-    // Add the new data to the day array for the specific assessment name
-    assessment.assessments[assessmentName].days[day].push(dataToUpdate);
-
-    // Save the updated assessment document
-    await assessment.save();
-
-    // Return the updated assessment
-    res.json(assessment);
-});
-
-
-const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
-    const { id, assessmentName, day } = req.body;
-    const assessment=await Assessment.findById(id)
-    console.log(assessment);
-
     try {
-        // Create the projection string dynamically
-        const projection = { [`assessments.${assessmentName}.days.${day}`]: 1 };
+        const { assessmentName, day, id, data } = req.body;
 
-        // Find the assessment by id with the specified projection
-        const assessment = await Assessment.findById(id, projection);
+        const update = {
+            [`assessmentData.${assessmentName}.days.${day}.data`]: data
+        };
 
-        if (!assessment) {
-            return res.status(404).json({ message: 'Assessment not found' });
-        }
+        const options = { new: true, upsert: true };
 
-        // Extract the specific day data
-        const dayData = assessment.assessments?.[assessmentName]?.days?.[day];
+        const assessment = await Assessment.findByIdAndUpdate(id, update, options);
 
-        if (!dayData) {
-            return res.status(404).json({ message: 'Assessment data not found' });
-        }
+        res.json(assessment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
+    try {
+        const { id, assessmentName, day } = req.body;
 
-        // Return the specific day data
-        res.json(dayData);
+        const assessment = await Assessment.findById(id, {
+            [`assessmentData.${assessmentName}.days.${day}`]: 1
+        });
+
+        const data = assessment.assessmentData.get(assessmentName).days[day];
+
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

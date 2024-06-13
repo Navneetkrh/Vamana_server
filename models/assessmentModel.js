@@ -19,10 +19,10 @@ const assessmentModel = mongoose.Schema({
         ref: "Patient",
     }
     ,
-    assessments:{
+    assessmentData:{
         type:Map,
         of:{
-            type:mongoose.Schema.Types.ObjectId,
+            type:mongoose.Schema.Types.Mixed,
             ref:"SingleAssessment"
         },
         required:false,
