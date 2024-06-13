@@ -37,12 +37,12 @@ This endpoint retrieves the dashboard data for a specific user.
 ```json
 {
     "username" : "physician-username",
-    "dash" : [{"_id" : "AssessmentId",
-                "patientUhid" : "uhid",
-                "patientName" : "patient-name",
-                "patient" : "Reference Of Patient ObjectID",
-                "__v" : 0
-               }]
+    "dashboarddata": [
+        {
+            "_id": "AssessmentID",
+            "patientUhid": "patient-UHID",
+            "patientName": "patient-name"
+        }]
 }
 ```
 
