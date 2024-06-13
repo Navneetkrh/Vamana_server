@@ -1,4 +1,4 @@
-# Assessment API Usage
+# Vamana API Usage
 
 This document provides a brief overview of how to use the APIs provided in `assessmentController.js` and `userController.js`.
 
