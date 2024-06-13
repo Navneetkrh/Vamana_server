@@ -34,6 +34,17 @@ This endpoint retrieves the dashboard data for a specific user.
 **Headers:** `Authorization: Bearer <your-token>`
 
 **Response:** A JSON object containing the username and the dashboard data.
+```json
+{
+    "username" : "physician-username",
+    "dash" : [{"_id" : "AssessmentId",
+                "patientUhid" : "uhid:,
+                "patientName" : "patient-name",
+                "patient" : Reference Of Patient ObjectID,
+                "__v" : 0
+               }  ]
+}
+```
 
 ### `addNewDashboardElement`
 
