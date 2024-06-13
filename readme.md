@@ -38,11 +38,11 @@ This endpoint retrieves the dashboard data for a specific user.
 {
     "username" : "physician-username",
     "dash" : [{"_id" : "AssessmentId",
-                "patientUhid" : "uhid:,
+                "patientUhid" : "uhid",
                 "patientName" : "patient-name",
-                "patient" : Reference Of Patient ObjectID,
+                "patient" : "Reference Of Patient ObjectID",
                 "__v" : 0
-               }  ]
+               }]
 }
 ```
 
