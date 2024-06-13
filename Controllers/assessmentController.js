@@ -10,13 +10,15 @@ const Daydata = require('../models/singleAssesmentModel');
 const getDashboradData=expressAsyncHandler(async (req, res) => {
     const userid=req.user._id;
     const user=await User.findById(userid);
-    const dashboarddata=await Assessment.find({'physicianUserName':user.username})
+    const dashboarddata=await Assessment.find(
+        {'physicianUserName':user.username},
+        {patientUhid: 1, patientName: 1});
     // populte patient and get user data
 
     // console.log(dashboarddata)
     res.json({
         username:user.username,
-        dash:dashboarddata
+        dashboarddata,
        
     });
 });
