@@ -5,6 +5,7 @@ const expressAsyncHandler = require('express-async-handler');
 const bodyParser = require('body-parser');
 const loginSignup = require('./Controllers/userController');
 const { protect } = require("./middlewares/authMiddleware");
+const setupCronJob = require('./cron');
 const {getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}=require('./Controllers/assessmentController');
 
 const app = express();
@@ -40,6 +41,11 @@ app.get('/dashboard',protect,getDashboradData)
 app.post('/add',protect,addNewDashboardElement)
 app.post('/addsingle',protect,addSingleAssesment)
 app.post('/fetchsingle',protect,fetchSingleAssessment)
+
+// cron job setup for api calling
+const apiUrl = process.env.API_URL;
+setupCronJob(apiUrl);
+
 
 const PORT = process.env.PORT || 5000;
 const server=app.listen(PORT, () => {
