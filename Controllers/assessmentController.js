@@ -5,6 +5,8 @@ const Assessment = require('../models/assessmentModel');
 const patient=require('../models/patientModel');
 const SingleAssessment = require('../models/singleAssesmentModel');
 const Daydata = require('../models/singleAssesmentModel');
+const { json } = require('body-parser');
+const { parse } = require('dotenv');
 
 
 const getDashboradData=expressAsyncHandler(async (req, res) => {
@@ -25,7 +27,10 @@ const getDashboradData=expressAsyncHandler(async (req, res) => {
 const addNewDashboardElement=expressAsyncHandler(async (req, res) => {
         const username=req.user.username;
         // res.json(req.body)
-        const new_patient=new patient(req.body)
+        // parse req.body and create new patient
+        parsed_body=json.parse(req.body);
+        const new_patient=new patient(parsed_body)
+        
         
 
         await new_patient.save();
