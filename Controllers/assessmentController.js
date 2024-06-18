@@ -28,9 +28,9 @@ const addNewDashboardElement=expressAsyncHandler(async (req, res) => {
         const username=req.user.username;
         // res.json(req.body)
         // parse req.body and create new patient
-        parsed_body=json.parse(req.body);
-        const new_patient=new patient(parsed_body)
-        
+    
+        const new_patient=new patient(req.body);
+
         
 
         await new_patient.save();
