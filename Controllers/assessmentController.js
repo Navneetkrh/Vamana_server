@@ -80,7 +80,25 @@ const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+
 });
+// fetch my patient
+
+
+// fetch patient data
+const fetchSinglePatient = expressAsyncHandler(async (req, res) => {
+    try {
+        const { uhid } = req.body;
+
+        const patient = await patient.findOne({ uhid });
+
+        res.json(patient);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+});
+
 
 
 module.exports={getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}
