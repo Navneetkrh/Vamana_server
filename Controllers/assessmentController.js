@@ -83,22 +83,20 @@ const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
 
 });
 // fetch my patient
-
-
-// fetch patient data
-const fetchSinglePatient = expressAsyncHandler(async (req, res) => {
+const fetchPatient = expressAsyncHandler(async (req, res) => {
     try {
-        const { uhid } = req.body;
-
-        const patient = await patient.findOne({ uhid });
-
-        res.json(patient);
+        const patientid = req.body.patientid;
+        // find corresponding patient
+        const patientdata = await patient.findById(patientid); // Assuming "Patient" is the correct model name
+        res.json(patientdata);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-
 });
 
 
 
-module.exports={getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}
+
+
+
+module.exports={getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment,fetchPatient}

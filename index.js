@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const {login,signup}= require('./Controllers/userController');
 const { protect } = require("./middlewares/authMiddleware");
 const setupCronJob = require('./cron');
-const {getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}=require('./Controllers/assessmentController');
+const {getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment,fetchPatient}=require('./Controllers/assessmentController');
 
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
@@ -42,6 +42,7 @@ app.get('/dashboard',protect,getDashboradData)
 app.post('/add',protect,addNewDashboardElement)
 app.post('/addsingle',protect,addSingleAssesment)
 app.post('/fetchsingle',protect,fetchSingleAssessment)
+app.post('/patient',protect,fetchPatient)
 
 
 // cron job setup for api calling
