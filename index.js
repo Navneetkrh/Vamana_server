@@ -42,7 +42,7 @@ app.get('/dashboard',protect,getDashboradData)
 app.post('/add',protect,addNewDashboardElement)
 app.post('/addsingle',protect,addSingleAssesment)
 app.post('/fetchsingle',protect,fetchSingleAssessment)
-app.post('/patient',protect,fetchPatient)
+app.post('/fetchpatient',protect,fetchPatient)
 
 
 // cron job setup for api calling
