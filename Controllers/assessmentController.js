@@ -14,7 +14,7 @@ const getDashboradData=expressAsyncHandler(async (req, res) => {
     const user=await User.findById(userid);
     const dashboarddata=await Assessment.find(
         {'physicianUserName':user.username},
-        {patientUhid: 1, patientName: 1});
+        {patientUhid: 1, patientName: 1}).sort({createdAt: -1});
     // populte patient and get user data
 
     // console.log(dashboarddata)

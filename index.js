@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const {default: mongoose} = require('mongoose');
 const expressAsyncHandler = require('express-async-handler');
 const bodyParser = require('body-parser');
-const loginSignup = require('./Controllers/userController');
+const {login,signup}= require('./Controllers/userController');
 const { protect } = require("./middlewares/authMiddleware");
 const setupCronJob = require('./cron');
 const {getDashboradData,addNewDashboardElement,addSingleAssesment,fetchSingleAssessment}=require('./Controllers/assessmentController');
@@ -36,11 +36,13 @@ app.get('/', (req, res) => {
 });
 
 
-app.post('/login',loginSignup );
+app.post('/login',login )   
+app.post('/signup',signup)
 app.get('/dashboard',protect,getDashboradData)
 app.post('/add',protect,addNewDashboardElement)
 app.post('/addsingle',protect,addSingleAssesment)
 app.post('/fetchsingle',protect,fetchSingleAssessment)
+
 
 // cron job setup for api calling
 const apiUrl = process.env.API_URL;
