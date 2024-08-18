@@ -179,7 +179,7 @@ Example
 Example
 ```json
 {
-    "patientid":"66699d12a0fdc9f235a04d5b"
+    "assessmentId":"66699d12a0fdc9f235a04d5b"
 }
 
 ```
