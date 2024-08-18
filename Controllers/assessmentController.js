@@ -83,12 +83,35 @@ const fetchSingleAssessment = expressAsyncHandler(async (req, res) => {
 
 });
 // fetch my patient
+// const fetchPatient = expressAsyncHandler(async (req, res) => {
+//     try {
+//         const patientid = req.body.patientid;
+//         // find corresponding patient
+//         const patientdata = await patient.findById(patientid); // Assuming "Patient" is the correct model name
+//         res.json(patientdata);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
 const fetchPatient = expressAsyncHandler(async (req, res) => {
     try {
-        const patientid = req.body.patientid;
-        // find corresponding patient
-        const patientdata = await patient.findById(patientid); // Assuming "Patient" is the correct model name
-        res.json(patientdata);
+        const assessmentId = req.body.assessmentId;
+        
+        // Find the corresponding assessment
+        const assessmentData = await Assessment.findById(assessmentId).populate('patient');
+        
+        if (!assessmentData) {
+            return res.status(404).json({ message: "Assessment not found" });
+        }
+
+        // Extract patient data from the assessment
+        const patientData = assessmentData.patient;
+
+        if (!patientData) {
+            return res.status(404).json({ message: "Patient not found" });
+        }
+
+        res.json(patientData);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
